@@ -1,0 +1,42 @@
+import java.util.Scanner;
+
+public class UniqueCharacterCheck {
+	
+	public static void main(String[] args) {
+		
+		System.out.print("Please enter the valid string: ");
+		Scanner in = new Scanner(System.in);
+		
+		while( in.hasNextLine() ){
+			String inputStr = in.nextLine(); // 循环读取用户键盘输入
+			
+			if(inputStr.length()==0)        // 空字符串输入错误检测
+				System.out.println("You shouldn't enter empty content.");
+			else{
+				System.out.println("You entered: " + inputStr); 
+				boolean[] markArray = new boolean[128];  // 布尔型数组作为标记数组
+				int index;
+				boolean uniqueFlag = true;
+		
+				for(index=0;index<inputStr.length();index++){
+					char tempChar = inputStr.charAt(index);
+					if( markArray[(int)tempChar]==false ){
+						markArray[(int)tempChar]=true;
+					}
+					else{
+						uniqueFlag = false;
+						break;
+					}
+				}
+				if(uniqueFlag)
+					System.out.println("This string is unique.");
+				else
+					System.out.println("This string is not unique.");
+				
+				for(index=0;index<inputStr.length();index++)
+					markArray[index]=false;    // 复位标记数组
+			}
+			System.out.print("Please enter the next valid string: ");
+		}
+	}
+}
