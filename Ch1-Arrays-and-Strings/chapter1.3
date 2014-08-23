@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+public class PermutationCheck {
+
+	public static void main(String[] args) {
+
+		Scanner in = new Scanner(System.in);
+		String str1, str2;
+		
+		System.out.print("Please enter the first string: ");
+		str1 = in.nextLine();
+		System.out.print("Please enter the second string: ");
+		str2 = in.nextLine();
+		
+		if(str1.length()!=str2.length()){    // 两个字符串的长度不等, 显然不可能一个是另一个的permutation
+			System.out.println("Two strings are not permutation.");
+		}else{
+			if(str1.length()==0||str2.length()==0)  // 两个字符串的长度相等, 但都是空字符串, 显然讨论一个是另一个的permutation也没意义
+				System.out.println("Two strings are not permutation.");
+			else{
+				int[] markArray = new int[128];
+		
+				for(int i=0;i<str1.length();i++)
+					markArray[(int)str1.charAt(i)] = markArray[(int)str1.charAt(i)] + 1;
+				
+				for(int i=0;i<str2.length();i++){
+					if(markArray[(int)str2.charAt(i)]==0){
+						System.out.println("Two strings are not permutation.");
+						return;
+					}else
+						markArray[(int)str2.charAt(i)] = markArray[(int)str2.charAt(i)] - 1;
+				}	
+				
+				for(int i = 0; i<128; i++)
+					if(markArray[i]!=0){
+						System.out.println("Two strings are not permutation.");
+						return;
+					}
+				
+				System.out.println("Two strings are permutation.");
+			}
+		}
+	}
+}
