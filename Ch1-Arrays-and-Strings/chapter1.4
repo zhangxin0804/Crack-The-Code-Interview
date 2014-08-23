@@ -1,0 +1,46 @@
+
+#include <stdio.h>
+#include <string.h>
+
+
+void SpaceReplace(char testArray[], int trueLength){
+    
+    printf("The original true length of testArray is %s \n", testArray);
+    printf("The original true length of testArray is %d \n", trueLength);
+    int numSpace = 0;
+    int index;
+    
+    for(index=0;testArray[index]!='\0';index++){
+        if(testArray[index]==' ')                 // 统计空格的个数
+            numSpace++;
+    }
+    
+    printf("The number of space is %d \n", numSpace);
+    
+    int newTrueLength = trueLength + numSpace*2;
+    
+    for(index=trueLength-1;index>=0;index--){     // 在原始字符数组从后往前遍历之前的数组内容
+        if(testArray[index]==' '){                // 遇到空格内容，在扩容后数组相应index处替换
+            testArray[newTrueLength-1] = '0';
+            testArray[newTrueLength-2] = '2';
+            testArray[newTrueLength-3] = '%';
+            newTrueLength = newTrueLength - 3;
+        }else{
+            testArray[newTrueLength-1] = testArray[index]; // 遇到非空格内容，在扩容后数组相应index处copy内容
+            newTrueLength = newTrueLength - 1;
+        }
+    }
+    printf("The replaced  testArray is %s \n", testArray);
+}
+
+main()
+{
+    char testArray[256] = {' ','M','r',' ','J','o','h','n',' ','S','m','i','t','h',' '}; 
+    int trueLength = 0;
+    int index;
+    for(index=0;*(testArray+index)!='\0';index++)
+        ;
+    trueLength = index;
+    
+    SpaceReplace(testArray, trueLength); //已知字符数组和true length
+}
