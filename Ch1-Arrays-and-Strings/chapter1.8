@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+public class StringRotation {
+
+	public static void main(String[] args) {
+		
+		Scanner in = new Scanner(System.in);
+		System.out.print("Please enter the s1: ");
+		String s1 = in.nextLine();
+		System.out.print("Please enter the s2: ");
+		String s2 = in.nextLine();
+		
+		if(s1.length()!=s2.length())
+			System.out.println("s2 is not a rotation of s1 since they have different length.");
+		else{
+			String s1s1 = s1 + s1;  // 如果s2是roatation of s1，意味着s1中的子串经过rotation即子串重新拼接在首部后
+								            	// 能够得到s2. 因此考虑将s1和自身拼接，在检测s2是否为s1s1的子串, 不太容易想到。
+									           // concatenation costs O(n), 空间复杂度也是O(n)
+			
+			if(isSubstring(s1s1,s2)==true)
+				System.out.println("s2 is a rotation of s1.");
+			else
+				System.out.println("s2 is not a rotation of s1. ");
+		}
+	}
+}
