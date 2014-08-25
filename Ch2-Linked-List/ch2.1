@@ -1,0 +1,74 @@
+
+class Node {             // 一个简单的single linked list的class实现
+	// instance variable
+	Node next = null;
+	char charData;
+	
+	public Node(char temp){
+		charData = temp;
+	}
+	public void appendToTail(char temp){    // 新的node都是通过最初的那个起始node来添加到末尾
+		
+		Node end = new Node(temp);
+		Node tmpNode = this;
+		
+		while(tmpNode.next!=null){
+			tmpNode = tmpNode.next;
+		}
+		tmpNode.next = end;                // 找到single linked list的末尾，然后添加新Node
+	}
+}
+
+
+public class RemoveDuplicate {
+	public static void main(String[] args) {
+		Node start = new Node('F');
+		start.appendToTail('O');start.appendToTail('L');
+		start.appendToTail('L');start.appendToTail('O');
+		start.appendToTail('W');start.appendToTail(' ');
+		start.appendToTail('U');start.appendToTail('P');
+															 // 假设我们最少都有一个node
+		System.out.println("The original linked list is: ");
+        Node temp = start;
+        while(temp.next!=null){
+            System.out.print(temp.charData+"    ");
+            temp = temp.next;
+        }
+        System.out.print(temp.charData+"    ");
+     
+        RemoveDuplicate(start);                       // 调用remove duplicate方法
+        System.out.println("The remove duplicate linked list is: "); 
+        
+        temp = start;
+        while(temp.next!=null){
+            System.out.print(temp.charData+"    ");
+            temp = temp.next;
+        }
+        System.out.print(temp.charData+"    ");
+        
+	}
+	
+	public static void RemoveDuplicate(Node start){
+		if(start.next==null){
+			return;                    // 如果只有一个字符, 则直接返回不做任何处理
+		}else{
+			Node begin = start;
+			while(begin.next!=null){
+				Node tempPrev = begin;   // 由于single linked list没有prev域，所以暂存previous node方便node操作
+				Node end = begin.next;
+				while(end.next!=null){
+					if(end.charData==begin.charData){
+						tempPrev.next = end.next;
+					}
+					tempPrev = end;      // 随时更新tempPrev Node即前一个Node
+					end = end.next;
+				}
+				if(end.charData==begin.charData){
+					tempPrev.next = end.next;
+				}
+				begin = begin.next;
+			}
+					 // 当begin.next == null时，即意味着是对比字符是最后一个字符，则之后没有字符和它比较，函数结束
+		}
+	}
+}
