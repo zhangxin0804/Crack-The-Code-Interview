@@ -1,0 +1,71 @@
+
+class Node {             // 一个简单的single linked list的class实现
+	// instance variable
+	Node next = null;
+	char charData;
+	
+	public Node(char temp){
+		charData = temp;
+	}
+	public void appendToTail(char temp){    // 新的node都是通过最初的那个起始node来添加到末尾
+		
+		Node end = new Node(temp);
+		Node tmpNode = this;
+		
+		while(tmpNode.next!=null){
+			tmpNode = tmpNode.next;
+		}
+		tmpNode.next = end;                // 找到single linked list的末尾，然后添加新Node
+	}
+}
+
+
+public class KthToLast {
+
+	public static void main(String[] args) {
+		
+		Node start = new Node('F');
+		start.appendToTail('O');start.appendToTail('L');
+		start.appendToTail('L');start.appendToTail('O');
+		start.appendToTail('W');start.appendToTail('A');
+		start.appendToTail('U');start.appendToTail('P');
+															 // 假设我们最少都有一个node
+		System.out.println("The original linked list is: ");
+        Node temp = start;
+        while(temp.next!=null){
+            System.out.print(temp.charData+"    ");
+            temp = temp.next;
+        }
+        System.out.print(temp.charData+"    ");
+        
+        FindKthToLast(start,3);                        // 调用函数, 传入k参数值
+	}
+	
+	public static void FindKthToLast(Node start, int k){
+		
+		int length = 0;
+		Node iterateBegin = start;
+		Node iterateAhead = start;;
+		while(iterateBegin.next!=null){
+			length = length+1;
+			iterateBegin = iterateBegin.next;
+		}
+		length = length+1;									// 先统计整体singly linked list长度
+		System.out.println("");
+		System.out.println("The length of the linked list is " + length);
+		if(k>length){
+			System.out.println("The argument is invalid.");   // 统计整体长度是为了做error checking
+			return;
+		}
+		else{
+			for(int i=0;i<k-1;i++)
+				iterateAhead = iterateAhead.next;      // 根据k值，设定好runner technique中走在前面的指针所指向的位置
+		}
+		iterateBegin = start;
+		while(iterateAhead.next!=null){					// 两个指针一起移动，当前面的指针到达最后一个Node时，后面的指针即为要找的Node
+			iterateBegin = iterateBegin.next;
+			iterateAhead = iterateAhead.next;
+		}
+		System.out.println("The "+k+"th to last element is " + iterateBegin.charData);
+	}
+}
