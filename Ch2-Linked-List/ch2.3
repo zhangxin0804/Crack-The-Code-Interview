@@ -1,0 +1,70 @@
+
+class Node {             // 一个简单的single linked list的class实现
+	// instance variable
+	Node next = null;
+	char charData;
+	
+	public Node(char temp){
+		charData = temp;
+	}
+	public void appendToTail(char temp){    // 新的node都是通过最初的那个起始node来添加到末尾
+		
+		Node end = new Node(temp);
+		Node tmpNode = this;
+		
+		while(tmpNode.next!=null){
+			tmpNode = tmpNode.next;
+		}
+		tmpNode.next = end;                // 找到single linked list的末尾，然后添加新Node
+	}
+}
+
+public class DeleteNode {
+
+	public static void main(String[] args) {
+		
+		Node start = new Node('A');
+		start.appendToTail('B');start.appendToTail('C');
+		start.appendToTail('D');start.appendToTail('E');
+		start.appendToTail('F');start.appendToTail('G');
+		start.appendToTail('H');start.appendToTail('I');
+															 // 假设我们最少都有一个node
+		System.out.println("The original linked list is: ");
+        Node temp = start;
+        Node nodeToBeDeleted = null;
+        while(temp.next!=null){
+            System.out.print(temp.charData+"    ");        // 先输出原始linked list的内容
+            if(temp.charData=='A')                         // 测试用, 比如要删掉W所在的Node
+            	nodeToBeDeleted = temp; 
+            temp = temp.next;   
+        }
+        System.out.print(temp.charData+"    ");
+        System.out.println("");
+ 
+        System.out.println("After delete " + nodeToBeDeleted.charData + " operation, the linked list is: ");
+        DeleteNodeFunc(nodeToBeDeleted);                 // 调用删除子函数
+        
+        temp = start;
+        while(temp.next!=null){
+            System.out.print(temp.charData+"    ");  // 输出删除Node后的linked list
+            temp = temp.next;
+        }
+        System.out.print(temp.charData+"    ");
+	}
+	
+	public static void DeleteNodeFunc(Node deleteNode){
+		if(deleteNode.next==null)                      // 要删除的node不能是末尾node
+			System.out.println("The deleteNode parameter is invalid, it cannot be the last node.");
+		else{
+			Node begin = deleteNode;              // 同时操作一前一后指针， 完成后面对前面的值覆盖
+			Node end = begin.next;
+			while(end.next!=null){
+				begin.charData = end.charData;
+				begin = end;
+				end = begin.next;
+			}
+			begin.charData = end.charData;       // 注意最后一个node的处理, 值覆盖, 其前一个node的next域直接null
+			begin.next = null;
+		}
+	}
+}
