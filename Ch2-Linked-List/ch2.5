@@ -1,0 +1,87 @@
+// 假设两个linked list长度相等
+// 实际可能一个长一个短, 当一个结束时，需要额外处理多出来的node.
+
+
+
+class Node {             // 一个简单的single linked list的class实现
+	// instance variable
+	Node next = null;
+	int intData;
+	
+	public Node(int temp){
+		intData = temp;
+	}
+	public void appendToTail(int temp){    // 新的node都是通过最初的那个起始node来添加到末尾
+		
+		Node end = new Node(temp);
+		Node tmpNode = this;
+		while(tmpNode.next!=null){
+			tmpNode = tmpNode.next;
+		}
+		tmpNode.next = end;                // 找到single linked list的末尾，然后添加新Node
+	}
+}
+
+public class AddNumInLinkedList {
+
+	public static void main(String[] args) {
+		
+		Node firstNum = new Node(7);
+		firstNum.appendToTail(1);firstNum.appendToTail(6);       // 实际是, 617 + 595
+		Node secondNum = new Node(5);
+		secondNum.appendToTail(9);secondNum.appendToTail(5);
+
+		Node temp = null;
+		temp = SumTwoReversedList(firstNum,secondNum);          // 调用函数
+        while(temp.next!=null){
+            System.out.print(temp.intData+"    ");        
+            temp = temp.next;   
+        } 
+                                          
+        System.out.print(temp.intData+"    ");                 //  617+595 = 1212, reverse order输出时2->1->2->1
+        System.out.println("");
+	}
+	
+	public static Node SumTwoReversedList(Node firstBegin, Node secondBegin){
+
+		Node sumeLinkedList = null;
+		int carryVal = 0;
+		int newData = 0;
+		boolean headOccur = false;
+	
+		while(firstBegin.next!=null && secondBegin.next!=null){
+			if( (firstBegin.intData+secondBegin.intData+carryVal) >= 10 ){          // 计算时记得考虑carry bit
+				newData = (firstBegin.intData+secondBegin.intData+carryVal)-10;     // 有进位的情况
+				if(!headOccur){
+					headOccur = true;
+					sumeLinkedList = new Node(newData);
+				}else
+					sumeLinkedList.appendToTail(newData);
+				carryVal = 1;                                                     // 注意更新进位
+			}else{
+				newData = firstBegin.intData+secondBegin.intData+carryVal;            // 没有进位的情况
+				if(!headOccur){
+					headOccur = true;
+					sumeLinkedList = new Node(newData);
+				}else
+					sumeLinkedList.appendToTail(newData);
+				carryVal = 0;                // 注意更新进位
+			}
+			firstBegin = firstBegin.next;     // 两个linked list一起移动，对应位运算
+			secondBegin = secondBegin.next;
+		}
+		if(firstBegin.next==null&&secondBegin.next==null){        // 最后一个Node的处理
+			if( (firstBegin.intData+secondBegin.intData+carryVal) >= 10 ){
+				newData = (firstBegin.intData+secondBegin.intData+carryVal)-10;
+				sumeLinkedList.appendToTail(newData);
+				sumeLinkedList.appendToTail(1);
+			}else{
+				newData = firstBegin.intData+secondBegin.intData+carryVal;
+				sumeLinkedList.appendToTail(newData);
+			}
+		}
+		
+		return sumeLinkedList;
+	}
+
+}
