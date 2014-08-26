@@ -1,0 +1,102 @@
+import java.util.Scanner;
+
+class Node {             // 一个简单的single linked list的class实现
+	// instance variable
+	Node next = null;
+	int intData;
+	
+	public Node(int temp){
+		intData = temp;
+	}
+	public void appendToTail(int temp){    // 新的node都是通过最初的那个起始node来添加到末尾
+		
+		Node end = new Node(temp);
+		Node tmpNode = this;
+		
+		while(tmpNode.next!=null){
+			tmpNode = tmpNode.next;
+		}
+		tmpNode.next = end;                // 找到single linked list的末尾，然后添加新Node
+	}
+}
+
+public class PartitionLinkedList {
+
+	public static void main(String[] args) {
+		
+		Node start = new Node(1);
+		start.appendToTail(6);start.appendToTail(3);
+		start.appendToTail(2);start.appendToTail(12);
+		start.appendToTail(4);start.appendToTail(8);
+		start.appendToTail(11);start.appendToTail(9);
+															 // 假设我们最少都有一个node
+		System.out.println("The original linked list is: ");
+        Node temp = start;
+        while(temp.next!=null){
+            System.out.print(temp.intData+"    ");        // 先输出原始linked list的内容
+            temp = temp.next;   
+        }
+        System.out.print(temp.intData+"    ");
+        System.out.println("");
+        
+        Scanner in = new Scanner(System.in);
+        System.out.print("Please enter the around value: ");   // 读入键盘输入的around value用于partition
+        int aroundVal = Integer.parseInt(in.nextLine());
+        
+        temp = PartitionListGivenValue(start,aroundVal);       // 调用partition函数
+        while(temp.next!=null){
+            System.out.print(temp.intData+"    ");        
+            temp = temp.next;   
+        }                                     
+        System.out.print(temp.intData+"    ");                 // 输出partition后的结果
+        System.out.println("");
+        
+	}
+	
+	public static Node PartitionListGivenValue(Node start, int givenVal){
+		
+		Node originalBegin = start;
+		Node leftPartHead = null;
+		Node rightPartHead = null;
+		boolean leftHead = false;
+		boolean rightHead = false;
+		
+		while(originalBegin.next!=null){
+			if(originalBegin.intData<givenVal){                 // 建立<around value的Node构成的新的linked list
+				if(!leftHead){
+					leftPartHead = new Node(originalBegin.intData);
+					leftHead = true;
+				}else
+					leftPartHead.appendToTail(originalBegin.intData);
+			}
+			if(originalBegin.intData>=givenVal){              //  建立>=around value的Node构成的新的linked list
+				if(!rightHead){
+					rightPartHead = new Node(originalBegin.intData);
+					rightHead = true;
+				}else
+					rightPartHead.appendToTail(originalBegin.intData);
+			}
+			originalBegin = originalBegin.next;
+		}
+		
+		if(originalBegin.intData<givenVal){                    // 最后一个Node做同样处理
+			if(!leftHead){
+				leftPartHead = new Node(originalBegin.intData);
+				leftHead = true;
+			}else
+				leftPartHead.appendToTail(originalBegin.intData);
+		}
+		if(originalBegin.intData>=givenVal){
+			if(!rightHead){
+				rightPartHead = new Node(originalBegin.intData);
+				rightHead = true;
+			}else
+				rightPartHead.appendToTail(originalBegin.intData);
+		}
+		Node temp = leftPartHead;
+		while(temp.next!=null)
+			temp = temp.next;                 // 先找到左半边linked list的末尾
+		temp.next = rightPartHead;            // 连接左半边linked list与右半边linked list
+		return leftPartHead;                  // 返回新的partition后的linked list的头部
+	}
+}
