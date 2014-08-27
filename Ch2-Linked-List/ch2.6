@@ -1,0 +1,75 @@
+
+class Node {             // 一个简单的single linked list的class实现
+	// instance variable
+	Node next = null;
+	char charData;
+	
+	public Node(char temp){
+		charData = temp;
+	}
+	public void appendToTail(char temp){    // 新的node都是通过最初的那个起始node来添加到末尾
+		
+		Node end = new Node(temp);
+		Node tmpNode = this;
+		
+		while(tmpNode.next!=null){
+			tmpNode = tmpNode.next;
+		}
+		tmpNode.next = end;                // 找到single linked list的末尾，然后添加新Node
+	}
+}
+
+public class FindNodeInCircularList {
+
+	public static void main(String[] args) {
+		
+		Node start = new Node('A');
+		start.appendToTail('B');start.appendToTail('C');
+		start.appendToTail('D');start.appendToTail('E');
+		start.appendToTail('D');
+															 // 假设我们最少都有一个node
+		System.out.println("The original linked list is: ");
+        Node temp = start;
+        while(temp.next!=null){
+            System.out.print(temp.charData+"    ");        // 先输出原始linked list的内容
+            temp = temp.next;   
+        }
+        System.out.print(temp.charData+"    ");
+        System.out.println("");
+        
+        Node loopHead = null;
+        loopHead = FindNodeInLoop(start);               // 调用函数找loop head
+        System.out.println("The head of loop is: " + loopHead.charData);
+	}
+	
+	public static Node FindNodeInLoop(Node start){
+		
+		int linkedListSequence = 0;
+		Node loopHead = null;
+		Node temp = start;
+		int[] markArray = new int[128];
+		
+		for(int i = 0; i < markArray.length; i++)
+			markArray[i] = -1;                          // 开辟一个标记数组, 初始化-1,index值对应Node 字符ASCII值
+														                      // 内容存放相应node在linked list中的序号	
+		char specialFirst = temp.charData;
+		while(temp!=null){
+			if( markArray[(int)temp.charData]==-1 ){
+					markArray[(int)temp.charData] = linkedListSequence;  // 记录第一次出现时在linked list上的顺序
+			}else{
+				int loopHeadSequence = markArray[(int)temp.charData];   // 第二次出现，意味着有loop, 获取到
+				int k = 0;												                      // 之前的顺序，然后从头再次遍历返回LoopHead Node
+				Node tempStart = start;
+				while(k!=loopHeadSequence){
+					tempStart = tempStart.next;
+					k++;
+				}
+				loopHead = tempStart;
+				return loopHead;
+			}
+			linkedListSequence = linkedListSequence + 1;
+			temp = temp.next;
+		}
+		return loopHead;
+	}
+}
