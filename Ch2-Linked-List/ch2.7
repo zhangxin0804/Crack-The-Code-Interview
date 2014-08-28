@@ -1,0 +1,84 @@
+class Node{
+	
+	Node next;
+	char charData;
+	public Node(char parameter){
+		next = null;
+		charData = parameter;
+	}
+	public void AppendToTail(char appendChar){
+		Node temp = this;
+		Node end = new Node(appendChar);
+		while(temp.next!=null){
+			temp = temp.next;
+		}
+		temp.next = end;
+	}
+}
+
+public class CheckLinkedListPalindrome {
+
+	public static void main(String[] args) {
+		
+		/*
+		Node start = new Node('A');
+		start.AppendToTail('B');start.AppendToTail('C');
+		start.AppendToTail('D');start.AppendToTail('E');
+		start.AppendToTail('F');start.AppendToTail('G');
+		*/
+		
+		Node start = new Node('A');
+		start.AppendToTail('B');start.AppendToTail('C');
+		start.AppendToTail('D');start.AppendToTail('C');
+		start.AppendToTail('B');start.AppendToTail('A');
+		
+															                            // 假设我们最少都有一个node
+		System.out.println("The original linked list is: ");
+        Node temp = start;
+        while(temp.next!=null){
+            System.out.print(temp.charData+"    ");        // 先输出原始linked list的内容
+            temp = temp.next;   
+        }
+        System.out.print(temp.charData+"    "); 	System.out.println("");
+        if(CheckPalindrome(start)==true)              // 调用函数, 检测是否是回文字符序列
+        	System.out.println("This linked list is palindrome.");
+        else
+        	System.out.println("This linked list is not palindrome.");	
+	}
+	
+	public static boolean CheckPalindrome(Node start){
+		
+		Node reverseListEnd = new Node(start.charData); // 不断逆序移动，作为新创建的逆序linked list的一个移动指针
+		Node reverseListStart = null;   // 用于最后存放新创建的逆序linked list的head Node
+		Node temp = start;              // 原始linked list也得遍历才能创建新linked list
+		
+		while(temp.next!=null){
+				
+			Node reverseNode = new Node(temp.next.charData); // 不断创建新linked list的Node
+			reverseNode.next = reverseListEnd;              // 完成新list之间的连接
+			temp = temp.next;                               // 更新原始list操作Node
+			reverseListEnd = reverseNode; 					        // 更新新创建list的Node
+		}
+		reverseListStart = reverseListEnd;                  // reverseListEnd从后往前移动到首部得到新创建的
+															                          // 逆序linked list的Head Node
+       
+		/***************************************************************
+		Node temp2 = reverseListStart;
+        while(temp2.next!=null){
+            System.out.print(temp2.charData+"    ");        // 输出Reversed linked list的内容
+            temp2 = temp2.next;   
+        }
+        System.out.print(temp2.charData+"    "); 	System.out.println("");
+        *********************************************************************/
+		
+		while(reverseListStart!=null&&start!=null){
+			if(reverseListStart.charData!=start.charData){
+				return false;
+			}else{
+				reverseListStart = reverseListStart.next;
+				start = start.next;
+			}
+		}
+		return true;
+	}
+}
