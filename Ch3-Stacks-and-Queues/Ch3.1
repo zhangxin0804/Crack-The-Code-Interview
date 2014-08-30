@@ -1,0 +1,81 @@
+import java.util.Scanner;
+
+
+class Stack{
+	private int stackTop;
+	private int stackTopMin; // stack push操作能到达的最小位置即临界是下一个stack起始位置, 所以是开区间
+	private int stackTopMax;  // stack pop操作能到达的最大位置
+	
+	Stack(int tempTop, int tempMin){
+		stackTop = tempTop + 1;  // 注意：初始时3个堆栈并没有内容， 让top所指向的index多加个1, 方便push pop操作
+		stackTopMin = tempMin;
+		stackTopMax = tempTop;
+	}
+	
+	void stackPush(int temp,int[] singleArray){
+		stackTop = stackTop - 1;
+		if(stackTop<=stackTopMin){                // 入栈操作
+			System.out.println("The stack is full, push operation failed.");
+			stackTop = stackTop + 1;
+		}else{
+			singleArray[stackTop] = temp;
+		}
+	}
+	
+	void stackPop(int[] singleArray){      // 出栈操作
+		if(stackTop>stackTopMax){
+			System.out.println("The stack is empty, pop operation failed.");
+			return;
+		}
+		System.out.println("The stack top is " + stackTop );
+		singleArray[stackTop] = 0;
+		stackTop = stackTop + 1;
+	}
+	
+	int stackPeek(int[] singleArray){             // 返回栈顶元素，但不改变栈顶位置
+		return singleArray[stackTop];
+	}
+	
+}
+public class SingleArrayThreeStacks {
+
+	public static void main(String[] args) {
+		
+		Scanner in = new Scanner(System.in);
+		System.out.println("Please enter the first stack length: ");
+		int firstStackLength = in.nextInt();
+		
+		System.out.println("Please enter the second stack length: ");
+		int secondStackLength = in.nextInt();
+		
+		System.out.println("Please enter the third stack length: ");
+		int thirdStackLength = in.nextInt();						// 得到用户输入的3个stack space大小
+		
+		int totalArrayLength = firstStackLength+secondStackLength+thirdStackLength;
+		int[] singleArray = new int[totalArrayLength];           // default initialization is 0
+		
+		int firstStackTop = totalArrayLength - 1;
+		int secondStackTop = firstStackTop - firstStackLength;
+		int thirdStackTop = secondStackTop - secondStackLength;   // 按照堆栈向下增长的方式，根据stack space大小得到各自的stack top
+		
+		
+		Stack firstStack = new Stack(firstStackTop,secondStackTop); // 在array的高Index部分
+		Stack secondStack = new Stack(secondStackTop,thirdStackTop);
+		Stack thirdStack = new Stack(thirdStackTop,0);
+		
+		firstStack.stackPush(1, singleArray);
+		firstStack.stackPush(2, singleArray);
+		firstStack.stackPush(3, singleArray);
+		
+		System.out.println(firstStack.stackPeek(singleArray));
+		
+		firstStack.stackPop(singleArray);
+		System.out.println(firstStack.stackPeek(singleArray));
+		
+		firstStack.stackPop(singleArray);
+		System.out.println(firstStack.stackPeek(singleArray));
+		
+		firstStack.stackPop(singleArray);
+	
+	}
+}
