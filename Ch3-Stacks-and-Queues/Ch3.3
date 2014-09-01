@@ -1,0 +1,106 @@
+import java.util.ArrayList;
+import java.util.Stack;
+
+
+class SetsOfStacks extends Stack<Integer>{    // 注意继承的类是Stack<E>, E可以是Integer, String, etc.以前误以为就是<Stack>
+	
+	private int threshold;     
+	ArrayList<Stack<Integer>> stackRefArr;
+	private int currentStack;
+	
+	public SetsOfStacks(){
+		stackRefArr = new ArrayList<Stack<Integer>>();   // 新建一个ArrayList，每个元素refer to 一个Stack对象
+		threshold = 3; 									                 // 初始化每个Stack的元素个数的阈值
+		currentStack = 0;  								              // 用来表示当前操作的Stack所处的index
+	}
+	
+	public void push(int temp){
+		Integer tmp = new Integer(temp);
+		if(stackRefArr.size()==0){                              // 初始时没有Stack, 重新创建push元素
+			Stack<Integer> newStack = new Stack<Integer>();       
+			stackRefArr.add(newStack);                           // index为0的位置上有了新的元素
+			newStack.push(tmp);
+		}else{
+			if( stackRefArr.get(currentStack).size()==threshold ){  
+				currentStack = currentStack + 1;			            // 用于指向当前操作的Stack的index也更新
+				Stack<Integer> newStack = new Stack<Integer>();   // 当前一个Stack满时，重新创建新的Stack
+				stackRefArr.add(newStack);                        // 将指向新Stack的object reference加入ArrayList
+				newStack.push(tmp);	
+			}else{
+				stackRefArr.get(currentStack).push(tmp);
+			}
+		}
+	}
+	
+	public Integer pop(){
+		Integer popOut = null;
+		if(stackRefArr.size()==0){             // 初始时,没有元素pop out
+			System.out.println("No elements in stack, pop is invalid.");
+			return null;
+		}else{
+			if(stackRefArr.get(currentStack).size()==0){
+				stackRefArr.remove(currentStack);
+				if(currentStack==0){
+					System.out.println("The stack is already empty.");
+					return null;
+				}
+				currentStack = currentStack - 1;
+				popOut = stackRefArr.get(currentStack).pop();
+			}else{
+				popOut = stackRefArr.get(currentStack).pop();
+			}
+		}
+		return popOut ;
+	}
+	
+	public int popAt(int index){            // 假设传进来的index参数也是从0开始，方便处理即从0号Stack开始
+		Integer popOut = null;
+		if(index>currentStack)			          	// 无效的index, 输出错误信息
+			System.out.println("Index of specific index is invalid.");
+		else{
+			currentStack = index;                  // 根据index更新currentStack
+			if(stackRefArr.get(currentStack).size()==0){
+				stackRefArr.remove(currentStack);
+				if(currentStack==0){
+					System.out.println("The stack is already empty.");
+					return -1;
+				}
+				currentStack = currentStack - 1;
+				popOut = stackRefArr.get(currentStack).pop();
+			}else{
+				popOut = stackRefArr.get(currentStack).pop();
+			}
+		}
+		
+		return popOut.intValue();
+	}
+
+}
+
+
+public class SetsOfStacksSolution {
+
+	public static void main(String[] args) {
+		
+		SetsOfStacks setStack = new SetsOfStacks();   // 假设阈值为3
+		
+		setStack.push(1);setStack.push(2);setStack.push(3);  // #0 Stack
+		setStack.push(4);setStack.push(5);setStack.push(6);  // #1 Stack
+		setStack.push(7);setStack.push(8);setStack.push(9);  // #2 Stack
+
+		
+		System.out.println(setStack.pop());
+		System.out.println(setStack.pop());
+		System.out.println(setStack.pop());
+		System.out.println(setStack.pop());
+		System.out.println(setStack.pop());
+		System.out.println(setStack.pop());
+		System.out.println(setStack.pop());
+		System.out.println(setStack.pop());
+		System.out.println(setStack.pop());
+		
+		System.out.println(setStack.pop());
+
+	}
+
+}
