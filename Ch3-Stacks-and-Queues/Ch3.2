@@ -1,0 +1,65 @@
+import java.util.Stack;
+
+
+class StackWithMin extends Stack<Integer>{
+
+	Stack<Integer> minStack;
+	
+	public StackWithMin(){
+		minStack = new Stack<Integer>();       // 创建一个helper stack, 用来push栈每次更新的value
+	}
+	
+	public void push(int item){
+		Integer temp = new Integer(item);
+		if(minStack.isEmpty()==true){
+			minStack.push(temp);             // 第一个元素push时
+		}else if(item<=minStack.peek())
+			minStack.push(temp);             // 更新help stack, 即将新的minValue入helper栈
+		super.push(temp);
+	}
+	
+	public Integer pop(){
+		Integer pop = super.pop();
+		if( pop.intValue() == min() ){
+			minStack.pop();                    // pop出当前的min value, 之后的stack top即为新的min value
+		}
+		return pop;
+	}
+	
+	public int min(){
+		
+		if(minStack.empty() == true){
+			System.out.println("No elements in stack.");
+			return -1;
+		}else{
+			return minStack.peek();              // helper stack的peek即栈顶元素即为new stack所有元素中的min value
+		}
+	}
+}
+
+public class StackWithMinOperation {
+
+	public static void main(String[] args) {
+	
+		StackWithMin stack = new StackWithMin();
+		
+		stack.push(1);stack.push(2);stack.push(9);stack.push(7);stack.push(0);
+		stack.push(4);stack.push(5);stack.push(8);stack.push(6);stack.push(10);
+	
+		System.out.println(stack.min());
+		stack.pop();
+		System.out.println(stack.min());
+		stack.pop();
+		System.out.println(stack.min());
+		stack.pop();
+		System.out.println(stack.min());
+		stack.pop();
+		System.out.println(stack.min());
+		stack.pop();
+		System.out.println(stack.min());
+		stack.pop();
+		System.out.println(stack.min());
+		stack.pop();
+		System.out.println(stack.min());
+	}
+}
