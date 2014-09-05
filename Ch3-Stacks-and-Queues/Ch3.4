@@ -1,0 +1,62 @@
+import java.util.Stack;
+
+/*
+ * 经典的Hanoi Tower汉诺塔问题, 用recursive方法解决, 具体见分析
+ */
+
+
+/*
+ * HanoiTower对象维护一个Stack
+ */
+class HanoiTower{
+	
+	private Stack<Integer> peg;
+	private int index;     // 用于记录是第几个tower, 从编号1开始，此题即tower 1, tower 2, tower 3
+	
+	public HanoiTower(int tmpIndex){
+		peg = new Stack<Integer>();
+		index = tmpIndex;             // 从tower 1开始标号
+	}
+	
+	public void add(int num){
+		if(peg.isEmpty()==true)
+			peg.add(num);
+		else{
+			if(peg.peek()>num)
+				peg.add(num);
+			else
+				System.out.println("Not allowed: Cannot put a larger plate on the top of the current stack top plate.");
+		}
+	}
+		
+	public void movePlates(int n, HanoiTower fromPeg, HanoiTower helper, HanoiTower toPeg){
+		
+		if(n==1){
+			toPeg.add(fromPeg.peg.pop());
+			System.out.println("Move from tower "+fromPeg.index+" to tower " + toPeg.index);
+			return;
+		}
+		else{
+			movePlates(n-1,fromPeg, toPeg, helper);
+			System.out.println("Move from tower "+fromPeg.index+" to tower " + toPeg.index);
+			movePlates(n-1,helper, fromPeg, toPeg);
+			
+		}
+	}
+}
+
+public class HanoiTowerSolution {
+
+	public static void main(String[] args) {
+		
+		 int n=3;
+		 HanoiTower[] towers = new HanoiTower[n];
+	     for(int i=0; i<3; i++) {
+	    	 towers[i] = new HanoiTower(i+1);  // tower标号从1开始
+	     }
+	     for(int i=n-1; i>=0; i--) {
+	    	 towers[0].add(i);                 // 按照从上到下递增的数据排列
+	     }
+	     towers[0].movePlates(n, towers[0], towers[1], towers[2]);
+	}
+}
