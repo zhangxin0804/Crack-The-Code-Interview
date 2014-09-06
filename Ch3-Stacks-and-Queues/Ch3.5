@@ -1,0 +1,41 @@
+import java.util.Stack;
+
+class MyQueue{
+	private Stack<Integer> firstStack;  // 用于存放添加进来的数据
+	private Stack<Integer> secondStack; // 用于pop out数据的堆栈
+	
+	
+	public MyQueue(){
+		firstStack = new Stack<Integer>();
+		secondStack = new Stack<Integer>();
+	}
+	
+	public void add(int number){
+		
+		firstStack.push(number);
+	}
+	
+	public Integer remove(){
+		
+		if(secondStack.isEmpty()==true){
+			if(firstStack.isEmpty()==true)
+					return null;
+			else{
+				while(firstStack.isEmpty()==false){
+					secondStack.push(firstStack.pop());
+				}
+			}
+		}
+		return secondStack.pop();
+	}
+}
+
+
+public class QueueUsing2StacksSolution {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}
