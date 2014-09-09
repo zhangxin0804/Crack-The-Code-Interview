@@ -1,0 +1,33 @@
+import java.util.Stack;
+
+public class SortStackSolution {
+
+	public static void main(String[] args) {
+		
+		int tmp = 0;
+		Stack<Integer> stack1 = new Stack<Integer>();    // 保存原始数据
+		Stack<Integer> helpStack = new Stack<Integer>(); // 作为过渡栈, 并且最终存放从top开始跌biggest number的目标数据顺序
+		stack1.push(9);stack1.push(8);stack1.push(5);stack1.push(4);
+		stack1.push(7);stack1.push(1);stack1.push(3);stack1.push(2);
+		
+		System.out.println("The original stack is:  2 3 1 7 4 5 8 9 ");
+		
+		helpStack.push(stack1.pop());                    // 先pop一个数据从stack1到helpStack
+
+		while(stack1.isEmpty()==false){
+			if(stack1.peek()>=helpStack.peek()){          // 如果stack1 top >= stack2 Top直接压入helpStack
+				helpStack.push(stack1.pop());
+			}else{
+					tmp = stack1.pop();                   //  如果stack1 top < stack2 top, 先暂存Stack1 top到tmp
+						while( helpStack.isEmpty()==false && tmp<helpStack.peek() ){
+							stack1.push(helpStack.pop());     // 然后不断将helpStack2 top压回stack1
+						}
+					helpStack.push(tmp);                // 找到合适位置插入tmp, 类似插入排序insertion sort
+			}
+		}
+		System.out.print("The sorted stack is:  ");
+		while(helpStack.isEmpty()==false){
+			System.out.print(helpStack.pop()+" ");
+		}
+	}
+}
