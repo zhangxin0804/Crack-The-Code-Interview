@@ -1,0 +1,65 @@
+import java.util.LinkedList;
+
+
+class Animal{
+	
+	private String name;
+	private int number;
+	
+	public Animal(String tmpName, int tmpNum){
+		name = tmpName;
+		number = tmpNum;
+	}
+	public int getArrivalTime(){
+		return this.number;
+	}
+	public String getAnimalName(){
+		return this.name;
+	}
+}
+
+
+class Dog extends Animal{
+	public Dog(String tmpName, int tmpNum){
+		super(tmpName, tmpNum);
+	}
+}
+
+class Cat extends Animal{
+	public Cat(String tmpName, int tmpNum){
+		super(tmpName, tmpNum);
+	}
+}
+
+
+class AnimalShelter{
+	
+	private LinkedList<Dog> dogs;
+	private LinkedList<Cat> cats;
+	
+	public AnimalShelter(){
+		dogs = new LinkedList<Dog>();      
+		cats = new LinkedList<Cat>();
+	}
+	
+	public void Enqueue(Animal tmpAnima){
+		
+		// Not finished, 注意instanceof的用法！！
+		
+	}
+	
+	
+	
+	
+}
+
+
+public class AnimalShelterQueueSolution {
+
+	public static void main(String[] args) {
+		
+
+
+	}
+
+}
